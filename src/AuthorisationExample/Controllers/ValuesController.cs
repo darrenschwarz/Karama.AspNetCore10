@@ -4,30 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
-namespace LoggingExample.Controllers
+namespace AuthorisationExample.Controllers
 {
-
+    [Authorize(Policy= "IOAdmin")]
     //[Authorize]
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
-        private ILogger<ValuesController> _logger;
-
-        public ValuesController(ILogger<ValuesController> logger)
-        {
-            _logger = logger;
-        }
-
         // GET: api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            _logger.LogInformation("This happened");
-            _logger.LogError("This Error happened");
-            var userName = User.Identity.Name;
-            return new string[] { "value1", "value2", userName };
+            return new string[] { "value1", "value2" };
         }
 
         // GET api/values/5
