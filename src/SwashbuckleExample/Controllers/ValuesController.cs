@@ -35,9 +35,18 @@ namespace SwashbuckleExample.Controllers
         /// <summary>
         /// Add a value
         /// </summary>
-        /// <param name="value"></param>
+        /// <remarks>
+        /// Note that there is nothing particularly noteworthy here.
+        ///  
+        ///     POST /Values
+        ///     {
+        ///        "Value": "A Value"        
+        ///     }
+        /// 
+        /// </remarks>
+        /// <param name="aValue"></param>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]AValue aValue)
         {
             // For more information on protecting this API from Cross Site Request Forgery (CSRF) attacks, see http://go.microsoft.com/fwlink/?LinkID=717803
         }
@@ -62,5 +71,13 @@ namespace SwashbuckleExample.Controllers
         {
             // For more information on protecting this API from Cross Site Request Forgery (CSRF) attacks, see http://go.microsoft.com/fwlink/?LinkID=717803
         }
+    }
+
+    /// <summary>
+    /// An Object with a value 
+    /// </summary>
+    public class AValue
+    {
+        public string Value { get; set; }
     }
 }
