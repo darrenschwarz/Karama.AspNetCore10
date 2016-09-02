@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuthorisationExample.Controllers
 {
-    [Authorize(Policy= "IOAdmin")]
+    [Authorize(Policy= "IOAdmin")]    
     //[Authorize]
     [Route("api/[controller]")]
     public class ValuesController : Controller

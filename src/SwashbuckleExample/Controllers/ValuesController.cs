@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,7 +47,7 @@ namespace SwashbuckleExample.Controllers
         /// </remarks>
         /// <param name="aValue"></param>
         [HttpPost]
-        public void Post([FromBody]AValue aValue)
+        public void Post([FromBody]string aValue)
         {
             // For more information on protecting this API from Cross Site Request Forgery (CSRF) attacks, see http://go.microsoft.com/fwlink/?LinkID=717803
         }
@@ -57,7 +58,7 @@ namespace SwashbuckleExample.Controllers
         /// <param name="id"></param>
         /// <param name="value"></param>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]AValue value)
         {
             // For more information on protecting this API from Cross Site Request Forgery (CSRF) attacks, see http://go.microsoft.com/fwlink/?LinkID=717803
         }
@@ -80,4 +81,5 @@ namespace SwashbuckleExample.Controllers
     {
         public string Value { get; set; }
     }
+  
 }

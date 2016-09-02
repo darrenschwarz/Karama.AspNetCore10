@@ -1,5 +1,6 @@
-﻿{
+{
   "dependencies": {
+    "AspNetCoreRateLimit": "1.0.0",
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
