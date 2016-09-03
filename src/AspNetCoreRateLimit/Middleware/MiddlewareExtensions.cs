@@ -14,6 +14,9 @@ namespace AspNetCoreRateLimit
             return builder.UseMiddleware<ClientRateLimitMiddleware>();
         }
 
-       
+        public static IApplicationBuilder UserUserRateimiterMiddleWare(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<UserRateimiterMiddleWare>();
+        }
     }
 }

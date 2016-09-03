@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AspNetCoreRateLimit;
+﻿using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -78,9 +74,14 @@ namespace SwashbuckleExample
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            app.UseIpRateLimiting();
 
-            app.UseMvcWithDefaultRoute();
+            app.UseIpRateLimiting();
+            app.UseClientRateLimiting();
+            //sapp.UserUserRateimiterMiddleWare();
+
+            //app.UseMvcWithDefaultRoute();
+            app.UseMvc();
+
             // Enable middleware to serve generated Swagger as a JSON endpoint
             app.UseSwagger();
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AspNetCoreRateLimit;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -46,7 +43,11 @@ namespace SwashbuckleExample.Controllers
         //    _ipPolicyStore.Set(_options.IpPolicyPrefix, pol);
         //}
 
-        [HttpPost]
+        /// <summary>
+        /// Update a RateLimitRule
+        /// </summary>
+        /// <param name="limit"></param>
+        [HttpPost]      
         public void Post([FromBody]int limit)
         {
             var pol = _ipPolicyStore.Get(_options.IpPolicyPrefix);
@@ -73,6 +74,23 @@ namespace SwashbuckleExample.Controllers
         /// Update a RateLimitRule
         /// </summary>
         /// <param name="ruleReplacement"></param>
+        /// <remarks>        
+        /// {
+        ///  "ip": "::1/10",
+        ///  "rateLimitRuleExisting": {
+        ///    "endpoint": "get:/api/values",
+        ///    "period": "1m",
+        ///    "periodTimespan": "string",
+        ///    "limit": 2
+        ///  },
+        ///  "rateLimitRuleNew": {
+        ///    "endpoint": "get:/api/values",
+        ///    "period": "1m",
+        ///    "periodTimespan": "string",
+        ///    "limit": 4
+        ///  }
+        ///}
+        /// </remarks>
         [HttpPut]
         public void Put([FromBody]RateLimitRuleReplacement ruleReplacement)
         {

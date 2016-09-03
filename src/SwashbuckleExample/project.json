@@ -19,13 +19,19 @@
   },
 
   "frameworks": {
-    "net461": { }
+    "net461": {}
   },
 
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
-    "xmlDoc":  true 
+    "xmlDoc": true
+  },
+
+  "runtimeOptions": {
+    "configProperties": {
+      "System.GC.Server": true
+    }
   },
 
   "publishOptions": {

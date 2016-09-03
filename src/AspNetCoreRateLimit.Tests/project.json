@@ -1,0 +1,26 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "dotnet-test-xunit": "1.0.0-rc2-*",
+    "AspNetCoreRateLimit": {
+      "version": "1.0.0-*",
+      "target": "project"
+    },
+    "SwashbuckleExample": {
+      "version": "1.0.0-*",
+      "target": "project"
+    },
+    "Microsoft.AspNetCore.TestHost": "1.0.0",
+    "xunit": "2.1.0"
+  },
+  "buildOptions": {
+    "copyToOutput": {
+      "include": [ "appsettings.json" ]
+    }
+  },
+  "testRunner": "xunit",
+  "frameworks": {
+    "net461": {}
+  }
+}
