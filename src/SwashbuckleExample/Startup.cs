@@ -77,7 +77,7 @@ namespace SwashbuckleExample
 
             app.UseIpRateLimiting();
             app.UseClientRateLimiting();
-            //sapp.UserUserRateimiterMiddleWare();
+            app.UserUserRateimiterMiddleWare();
 
             //app.UseMvcWithDefaultRoute();
             app.UseMvc();
