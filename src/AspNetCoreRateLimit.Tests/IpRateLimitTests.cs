@@ -1,5 +1,14 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace AspNetCoreRateLimit.Tests
@@ -16,12 +25,26 @@ namespace AspNetCoreRateLimit.Tests
 
         public HttpClient Client { get; }
 
+        private IAuthorizationService BuildAuthorizationService(Action<IServiceCollection> setupServices = null)
+        {
+            var services = new ServiceCollection();
+            services.AddAuthorization();
+            services.AddLogging();
+            services.AddOptions();
+            if (setupServices != null)
+            {
+                setupServices(services);
+            }
+            return services.BuildServiceProvider().GetRequiredService<IAuthorizationService>();
+        }
+
         [Theory]
         [InlineData("84.247.85.224")]
         [InlineData("84.247.85.225")]
         [InlineData("84.247.85.226")]
         public async Task SpecificIpRule(string ip)
         {
+            
             // Arrange
             int responseStatusCode = 0;
 
@@ -30,7 +53,7 @@ namespace AspNetCoreRateLimit.Tests
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, apiValuesPath);
                 request.Headers.Add("X-Real-IP", ip);
-
+                
                 var response = await Client.SendAsync(request);
                 responseStatusCode = (int)response.StatusCode;
             }
@@ -39,7 +62,7 @@ namespace AspNetCoreRateLimit.Tests
             Assert.Equal(429, responseStatusCode);
         }
 
-        [Fact]
+        [Fact]  
         public async Task GlobalIpRule()
         {
             // Arrange
@@ -51,7 +74,7 @@ namespace AspNetCoreRateLimit.Tests
             for (int i = 0; i < 4; i++)
             {
                 var request = new HttpRequestMessage(HttpMethod.Get, apiValuesPath);
-                request.Headers.Add("X-Real-IP", ip);
+                request.Headers.Add("X-Real-IP", ip);               
 
                 var response = await Client.SendAsync(request);
                 responseStatusCode = (int)response.StatusCode;

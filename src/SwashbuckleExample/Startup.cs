@@ -1,11 +1,17 @@
-﻿using AspNetCoreRateLimit;
+﻿using System.Threading.Tasks;
+using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.Swagger.Model;
+using SwashbuckleExample.AuthorizationRequirements;
 
 namespace SwashbuckleExample
 {
@@ -67,6 +73,15 @@ namespace SwashbuckleExample
                 //Set the comments path for the swagger json and ui.
                 options.IncludeXmlComments(basePath + "\\SwashbuckleExample.xml");
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IOAdmin",
+                    policy => policy.Requirements.Add(new RoleRequirement("IOAdmin")));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, RoleHandlerEmpty>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,8 +92,8 @@ namespace SwashbuckleExample
 
             app.UseIpRateLimiting();
             app.UseClientRateLimiting();
-            app.UserUserRateimiterMiddleWare();
-
+            app.UseUserRateimiterMiddleWare();
+       
             //app.UseMvcWithDefaultRoute();
             app.UseMvc();
 

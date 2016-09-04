@@ -12,7 +12,8 @@
       "target": "project"
     },
     "Microsoft.AspNetCore.TestHost": "1.0.0",
-    "xunit": "2.1.0"
+    "xunit": "2.1.0",
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0"
   },
   "buildOptions": {
     "copyToOutput": {

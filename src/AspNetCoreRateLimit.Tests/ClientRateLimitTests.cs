@@ -12,7 +12,7 @@ namespace AspNetCoreRateLimit.Tests
 
         public ClientRateLimitTests(RateLimitFixture<SwashbuckleExample.Startup> fixture)
         {
-            Client = fixture.Client;
+            Client = fixture.Client;            
         }
 
         public HttpClient Client { get; }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace SwashbuckleExample.Controllers
 {
     //TODO: Uncomment this and the tests will fail, saying there is no auth handler, need to set one up so we can test the full stack    
+    [Authorize(Policy = "IOAdmin")]
     //[Authorize]
     [Route("api/[controller]")]
     public class ValuesController : Controller

@@ -7,6 +7,7 @@ namespace SwashbuckleExample
     {
         public static void Main(string[] args)
         {
+            var e = Directory.GetCurrentDirectory();
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
