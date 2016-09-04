@@ -15,7 +15,7 @@ namespace AspNetCoreRateLimit.Tests
         {
             var builder = new WebHostBuilder()
                             .UseStartup<TStartup>()
-                            .UseEnvironment("TestServer");            
+                            .UseEnvironment("TestServer");
 
             _server = new TestServer(builder);
 
