@@ -1,17 +1,14 @@
-﻿using System.Threading.Tasks;
-using AspNetCoreRateLimit;
+﻿using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Internal;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.Swagger.Model;
 using SwashbuckleExample.AuthorizationRequirements;
+using SwashbuckleExample.MiddleWare;
 
 namespace SwashbuckleExample
 {
@@ -80,7 +77,7 @@ namespace SwashbuckleExample
                     policy => policy.Requirements.Add(new RoleRequirement("IOAdmin")));
             });
 
-            services.AddSingleton<IAuthorizationHandler, RoleHandlerEmpty>();
+            services.AddSingleton<IAuthorizationHandler, RoleHandler>();
             
         }
 
@@ -90,6 +87,7 @@ namespace SwashbuckleExample
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseHttpContextWindowsIdentityMiddleWare();
             app.UseIpRateLimiting();
             app.UseClientRateLimiting();
             app.UseUserRateimiterMiddleWare();

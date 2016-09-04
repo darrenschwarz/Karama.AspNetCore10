@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -51,8 +45,10 @@ namespace AspNetCoreRateLimit.Tests
             // Act    
             for (int i = 0; i < 3; i++)
             {
+
                 var request = new HttpRequestMessage(HttpMethod.Get, apiValuesPath);
                 request.Headers.Add("X-Real-IP", ip);
+
                 
                 var response = await Client.SendAsync(request);
                 responseStatusCode = (int)response.StatusCode;

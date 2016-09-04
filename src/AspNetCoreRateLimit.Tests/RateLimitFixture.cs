@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace AspNetCoreRateLimit.Tests
+﻿namespace AspNetCoreRateLimit.Tests
 {
     public class RateLimitFixture<TStartup> : RateLimitFixtureBase<TStartup>
         where TStartup : class
