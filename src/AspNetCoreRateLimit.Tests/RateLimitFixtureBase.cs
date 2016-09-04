@@ -13,19 +13,8 @@ namespace AspNetCoreRateLimit.Tests
 
         public RateLimitFixtureBase(string baseUri)
         {
-            //var wi = (System.Security.Principal.WindowsIdentity)Thread.CurrentPrincipal;
-
-            //var wic = wi.Impersonate();
-
             var builder = new WebHostBuilder().UseStartup<TStartup>();            
             _server = new TestServer(builder);
-
-            
-
-            //var s = _server.Host.Services.GetService(typeof(ClaimsIdentity));
-
-            //_server.Host.ServerFeatures.Set<ClaimsPrincipal>(ClaimsPrincipal.Current);
-
 
             Client = _server.CreateClient();
             
