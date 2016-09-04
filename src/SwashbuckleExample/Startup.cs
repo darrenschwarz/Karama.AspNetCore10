@@ -84,10 +84,14 @@ namespace SwashbuckleExample
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            var t = env.EnvironmentName;
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseHttpContextWindowsIdentityMiddleWare();
+            if(env.EnvironmentName == "TestServer" || env.EnvironmentName == "DevelopmentProject")
+                app.UseHttpContextWindowsIdentityMiddleWare();
+
             app.UseIpRateLimiting();
             app.UseClientRateLimiting();
             app.UseUserRateimiterMiddleWare();
