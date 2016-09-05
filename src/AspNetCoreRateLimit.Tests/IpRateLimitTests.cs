@@ -80,28 +80,6 @@ namespace AspNetCoreRateLimit.Tests
             Assert.Equal(429, responseStatusCode);
         }
 
-        [Fact]
-        public async Task WhitelistIp()
-        {
-            // Arrange
-            var ip = "::1";
-
-            int responseStatusCode = 0;
-
-            // Act    
-            for (int i = 0; i < 4; i++)
-            {
-                var request = new HttpRequestMessage(HttpMethod.Get, apiValuesPath);
-                request.Headers.Add("X-Real-IP", ip);
-
-                var response = await Client.SendAsync(request);
-                responseStatusCode = (int)response.StatusCode;
-            }
-
-            // Assert
-            Assert.Equal(200, responseStatusCode);
-        }
-
         [Theory]
         [InlineData("GET")]
         [InlineData("POST")]
@@ -125,51 +103,7 @@ namespace AspNetCoreRateLimit.Tests
 
             // Assert
             Assert.Equal(429, responseStatusCode);
-        }
-
-        [Fact]
-        public async Task WhitelistPath()
-        {
-            // Arrange
-            var ip = "84.247.85.229";
-            int responseStatusCode = 0;
-
-            // Act    
-            for (int i = 0; i < 4; i++)
-            {
-                var request = new HttpRequestMessage(HttpMethod.Delete, apiValuesPath);
-                request.Headers.Add("X-Real-IP", ip);
-
-                var response = await Client.SendAsync(request);
-                responseStatusCode = (int)response.StatusCode;
-            }
-
-            // Assert
-            Assert.NotEqual(429, responseStatusCode);
-        }
-
-        [Fact]
-        public async Task WhitelistClient()
-        {
-            // Arrange
-            var ip = "84.247.85.230";
-            var clientId = "cl-key-1";
-            int responseStatusCode = 0;
-
-            // Act    
-            for (int i = 0; i < 4; i++)
-            {
-                var request = new HttpRequestMessage(HttpMethod.Get, apiValuesPath);
-                request.Headers.Add("X-Real-IP", ip);
-                request.Headers.Add("X-ClientId", clientId);
-
-                var response = await Client.SendAsync(request);
-                responseStatusCode = (int)response.StatusCode;
-            }
-
-            // Assert
-            Assert.Equal(200, responseStatusCode);
-        }
+        }    
 
         [Fact]
         public async Task UpdateOptions()

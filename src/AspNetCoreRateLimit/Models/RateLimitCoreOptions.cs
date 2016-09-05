@@ -9,7 +9,10 @@ namespace AspNetCoreRateLimit
         public List<string> EndpointWhitelist { get; set; }
 
         public List<string> ClientWhitelist { get; set; }
-        
+
+        public List<string> UserWhitelist { get; set; }
+
+
         /// <summary>
         /// Gets or sets the HTTP Status code returned when rate limiting occurs, by default value is set to 429 (Too Many Requests)
         /// </summary>

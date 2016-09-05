@@ -103,7 +103,8 @@ namespace AspNetCoreRateLimit
             {
                 Path = httpContext.Request.Path.ToString().ToLowerInvariant(),
                 HttpVerb = httpContext.Request.Method.ToLowerInvariant(),
-                ClientId = clientId
+                ClientId = clientId,
+                User = httpContext.User.Identity.Name
             };
         }
 

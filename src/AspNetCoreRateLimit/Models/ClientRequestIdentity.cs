@@ -12,5 +12,8 @@
         public string Path { get; set; }
 
         public string HttpVerb { get; set; }
+
+        //DS - Adding IdentityName
+        public string User { get; set; }
     }
 }

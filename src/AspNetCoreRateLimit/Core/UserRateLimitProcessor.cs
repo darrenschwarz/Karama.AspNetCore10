@@ -1,61 +1,50 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AspNetCoreRateLimit
 {
-    public class IpRateLimitProcessor
+    public class UserRateLimitProcessor
     {
-        private readonly IpRateLimitOptions _options;
+        private readonly UserRateLimitOptions _options;
         private readonly IRateLimitCounterStore _counterStore;
-        private readonly IIpPolicyStore _policyStore;
-        private readonly IIpAddressParser _ipParser;
+        private readonly IUserPolicyStore _policyStore;
         private readonly RateLimitCore _core;
 
         private static readonly object _processLocker = new object();
 
-        public IpRateLimitProcessor(IpRateLimitOptions options,
-           IRateLimitCounterStore counterStore,
-           IIpPolicyStore policyStore,
-           IIpAddressParser ipParser)
+        public UserRateLimitProcessor(UserRateLimitOptions options,
+            IRateLimitCounterStore counterStore,
+            IUserPolicyStore policyStore)
         {
             _options = options;
             _counterStore = counterStore;
             _policyStore = policyStore;
-            _ipParser = ipParser;
 
-            _core = new RateLimitCore(true, options, _counterStore);
+            _core = new RateLimitCore(false, options, _counterStore);
         }
 
         public List<RateLimitRule> GetMatchingRules(ClientRequestIdentity identity)
         {
             var limits = new List<RateLimitRule>();
-            var policies = _policyStore.Get($"{_options.IpPolicyPrefix}");
+            var policy = _policyStore.Get($"{_options.UserPolicyPrefix}");
 
-            if (policies != null && policies.IpRules != null && policies.IpRules.Any())
+            if (policy != null)
             {
-                // search for rules with IP intervals containing client IP
-                var matchPolicies = policies.IpRules.Where(r => _ipParser.ContainsIp(r.Ip, identity.ClientIp)).AsEnumerable();
-                var rules = new List<RateLimitRule>();
-                foreach (var item in matchPolicies)
-                {
-                    rules.AddRange(item.Rules);
-                }
-
                 if (_options.EnableEndpointRateLimiting)
                 {
                     // search for rules with endpoints like "*" and "*:/matching_path"
-                    var pathLimits = rules.Where(l => $"*:{identity.Path}".ToLowerInvariant().Contains(l.Endpoint.ToLowerInvariant())).AsEnumerable();
+                    var pathLimits = policy.Rules.Where(l => $"*:{identity.Path}".ToLowerInvariant().Contains(l.Endpoint.ToLowerInvariant())).AsEnumerable();
                     limits.AddRange(pathLimits);
 
                     // search for rules with endpoints like "matching_verb:/matching_path"
-                    var verbLimits = rules.Where(l => $"{identity.HttpVerb}:{identity.Path}".ToLowerInvariant().Contains(l.Endpoint.ToLowerInvariant())).AsEnumerable();
+                    var verbLimits = policy.Rules.Where(l => $"{identity.HttpVerb}:{identity.Path}".ToLowerInvariant().Contains(l.Endpoint.ToLowerInvariant())).AsEnumerable();
                     limits.AddRange(verbLimits);
                 }
                 else
                 {
                     //ignore endpoint rules and search for global rules only
-                    var genericLimits = rules.Where(l => l.Endpoint == "*").AsEnumerable();
+                    var genericLimits = policy.Rules.Where(l => l.Endpoint == "*").AsEnumerable();
                     limits.AddRange(genericLimits);
                 }
             }
@@ -90,7 +79,7 @@ namespace AspNetCoreRateLimit
                 foreach (var generalLimit in generalLimits)
                 {
                     // add general rule if no specific rule is declared for the specified period
-                    if(!limits.Exists(l => l.Period == generalLimit.Period))
+                    if (!limits.Exists(l => l.Period == generalLimit.Period))
                     {
                         limits.Add(generalLimit);
                     }
@@ -104,9 +93,9 @@ namespace AspNetCoreRateLimit
             }
 
             limits = limits.OrderBy(l => l.PeriodTimespan).ToList();
-            if(_options.StackBlockedRequests)
+            if (_options.StackBlockedRequests)
             {
-                limits.Reverse();   
+                limits.Reverse();
             }
 
             return limits;
@@ -114,16 +103,6 @@ namespace AspNetCoreRateLimit
 
         public bool IsWhitelisted(ClientRequestIdentity requestIdentity)
         {
-            if (_options.IpWhitelist != null && _ipParser.ContainsIp(_options.IpWhitelist, requestIdentity.ClientIp))
-            {
-                return true;
-            }
-
-            if (_options.ClientWhitelist != null && _options.ClientWhitelist.Contains(requestIdentity.ClientId))
-            {
-                return true;
-            }
-
             if (_options.UserWhitelist != null && _options.UserWhitelist.Contains(requestIdentity.User))
             {
                 return true;

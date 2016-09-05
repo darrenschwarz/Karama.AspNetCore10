@@ -44,8 +44,17 @@ namespace SwashbuckleExample
             services.AddSingleton<IClientPolicyStore, MemoryCacheClientPolicyStore>();
             //services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
 
+            //configure client rate limiting middleware
+            services.Configure<UserRateLimitOptions>(Configuration.GetSection("UserRateLimiting"));
+            services.Configure<UserRateLimitPolicies>(Configuration.GetSection("UserRateLimitPolicies"));
+            services.AddSingleton<IUserPolicyStore, MemoryCacheUserPolicyStore>();
+
             var opt = new ClientRateLimitOptions();
             ConfigurationBinder.Bind(Configuration.GetSection("ClientRateLimiting"), opt);
+
+            var optUser = new UserRateLimitOptions();
+            ConfigurationBinder.Bind(Configuration.GetSection("UserRateLimiting"), optUser);
+
 
             // Add framework services.
             services.AddMvc();
@@ -92,8 +101,8 @@ namespace SwashbuckleExample
             if(env.EnvironmentName == "TestServer" || env.EnvironmentName == "DevelopmentProject")
                 app.UseHttpContextWindowsIdentityMiddleWare();
 
-            app.UseIpRateLimiting();
-            app.UseClientRateLimiting();
+            //app.UseIpRateLimiting();
+            //app.UseClientRateLimiting();
             app.UseUserRateimiterMiddleWare();
        
             //app.UseMvcWithDefaultRoute();

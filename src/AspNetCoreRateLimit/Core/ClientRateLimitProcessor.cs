@@ -108,6 +108,11 @@ namespace AspNetCoreRateLimit
                 return true;
             }
 
+            if (_options.UserWhitelist != null && _options.UserWhitelist.Contains(requestIdentity.User))
+            {
+                return true;
+            }
+
             if (_options.EndpointWhitelist != null && _options.EndpointWhitelist.Any())
             {
                 if (_options.EndpointWhitelist.Any(x => $"{requestIdentity.HttpVerb}:{requestIdentity.Path}".ToLowerInvariant().Contains(x.ToLowerInvariant())) ||
