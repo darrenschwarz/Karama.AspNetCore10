@@ -20,11 +20,12 @@ namespace SwashbuckleExample.Controllers
         /// <summary>
         /// Update CHULHU\darren 1m UserLimitRule
         /// </summary>
+        /// <param name="user"></param>
         /// <param name="limit"></param>
-        [HttpPost]
-        public void Post([FromBody]int limit)
+        [HttpPost("{user}")]
+        public void Post(string user, [FromBody]int limit)//TODO: Review,currently this simply removes existing rules and add one new one.
         {
-            var pol = _userPolicyStore.Get(_options.UserPolicyPrefix);
+            var pol = _userPolicyStore.Get($"{_options.UserPolicyPrefix}_{user}");
 
             pol.Rules = new List<RateLimitRule>();
 
