@@ -4,7 +4,7 @@ namespace AspNetCoreRateLimit
 {
     public class UserRateLimitPolicy
     {
-        public string Name { get; set; }
+        public string User { get; set; }
         public List<RateLimitRule> Rules { get; set; }
     }
 }

@@ -14,8 +14,8 @@ namespace AspNetCoreRateLimit.Tests
         public RateLimitFixtureBase(string baseUri)
         {
             var builder = new WebHostBuilder()
-                            .UseStartup<TStartup>()
-                            .UseEnvironment("TestServer");
+                .UseStartup<TStartup>()
+                .UseEnvironment("TestServer");
 
             _server = new TestServer(builder);
 

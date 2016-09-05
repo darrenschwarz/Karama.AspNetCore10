@@ -18,7 +18,7 @@ namespace AspNetCoreRateLimit
             {
                 foreach (var rule in policies.Value.UserRules)
                 {
-                    Set($"{options.Value.UserPolicyPrefix}", new UserRateLimitPolicy { Name = rule.Name, Rules = rule.Rules });
+                    Set($"{options.Value.UserPolicyPrefix}_{rule.User}", new UserRateLimitPolicy { User = rule.User, Rules = rule.Rules });
                 }
             }
         }

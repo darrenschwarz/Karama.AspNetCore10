@@ -27,7 +27,7 @@ namespace AspNetCoreRateLimit
         public List<RateLimitRule> GetMatchingRules(ClientRequestIdentity identity)
         {
             var limits = new List<RateLimitRule>();
-            var policy = _policyStore.Get($"{_options.UserPolicyPrefix}");
+            var policy = _policyStore.Get($"{_options.UserPolicyPrefix}_{identity.User}");
 
             if (policy != null)
             {

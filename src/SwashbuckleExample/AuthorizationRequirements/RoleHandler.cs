@@ -12,7 +12,7 @@ namespace SwashbuckleExample.AuthorizationRequirements
             {
                 return Task.FromResult(0);
             }
-
+            
             //Implement AdamService here:
             if (requirement.Role.Contains("IOAdmin"))
             {

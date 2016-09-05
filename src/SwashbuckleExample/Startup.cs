@@ -1,4 +1,5 @@
-﻿using AspNetCoreRateLimit;
+﻿using System.Configuration;
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +22,7 @@ namespace SwashbuckleExample
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+            
             Configuration = builder.Build();
         }
 
@@ -93,17 +95,17 @@ namespace SwashbuckleExample
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            var t = env.EnvironmentName;
-
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            if(env.EnvironmentName == "TestServer" || env.EnvironmentName == "DevelopmentProject")
+            if (env.EnvironmentName == "TestServer" || env.EnvironmentName == "DevelopmentProject")
                 app.UseHttpContextWindowsIdentityMiddleWare();
 
-            //app.UseIpRateLimiting();
-            //app.UseClientRateLimiting();
+            app.UseIpRateLimiting();
             app.UseUserRateimiterMiddleWare();
+            
+            //app.UseClientRateLimiting();
+            
        
             //app.UseMvcWithDefaultRoute();
             app.UseMvc();

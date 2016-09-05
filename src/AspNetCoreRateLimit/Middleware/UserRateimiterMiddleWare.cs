@@ -46,6 +46,8 @@ namespace AspNetCoreRateLimit
                 return;
             }
 
+            //identity.User = "CTHULHU\\fred";
+
             var rules = _processor.GetMatchingRules(identity);
 
             foreach (var rule in rules)
