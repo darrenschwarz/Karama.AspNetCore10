@@ -24,15 +24,13 @@ namespace SwashbuckleExample.MiddleWare
 
         public async Task Invoke(HttpContext context)
         {
-            //var identity = new GenericIdentity("CTHULHU\\fred");
-            //var principal = new GenericPrincipal(identity, null);
-            //Thread.CurrentPrincipal = principal;
-            //var cp = new ClaimsPrincipal(Thread.CurrentPrincipal);
-
-            var cp = new ClaimsPrincipal(WindowsIdentity.GetCurrent());
-
+            var wi = WindowsIdentity.GetCurrent();
+            wi.AddClaim(new Claim(@"http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "IOAdmin"));
+            
+            var cp = new ClaimsPrincipal(wi);
 
             context.User = cp;
+            
             await _next.Invoke(context);
 
         }

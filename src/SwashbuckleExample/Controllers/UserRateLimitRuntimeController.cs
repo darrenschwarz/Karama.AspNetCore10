@@ -18,7 +18,7 @@ namespace SwashbuckleExample.Controllers
         }
 
         /// <summary>
-        /// Update CHULHU\darren 1m UserLimitRule
+        /// Update CTHULHU\darren 1m UserLimitRule
         /// </summary>
         /// <param name="user"></param>
         /// <param name="limit"></param>
@@ -26,8 +26,8 @@ namespace SwashbuckleExample.Controllers
         public void Post(string user, [FromBody]int limit)//TODO: Review,currently this simply removes existing rules and add one new one.
         {
             var pol = _userPolicyStore.Get($"{_options.UserPolicyPrefix}_{user}");
-
-            pol.Rules = new List<RateLimitRule>();
+            var whitelist = _options.UserWhitelist;
+            pol.Rules = new List<RateLimitRule>();//TODO Allow for updating all or individual opions e.g. WhiteList
 
             pol.Rules.Add(new RateLimitRule
             {
