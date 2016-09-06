@@ -1,0 +1,18 @@
+﻿{
+  "dependencies": {
+    "dotnet-test-xunit": "1.0.0-*",
+    "Microsoft.AspNetCore.TestHost": "1.0.0",
+    "Moq": "4.6.25-alpha",
+    "Newtonsoft.Json": "9.0.1",
+    "System.Diagnostics.TraceSource": "4.0.0",
+    "System.Net.Http": "4.1.0",
+    "SwashbuckleExample": "1.0.0",
+    "xunit": "2.1.0"
+  },
+
+  "frameworks": {
+    "net461": {}
+  },
+
+  "testRunner": "xunit"
+}
