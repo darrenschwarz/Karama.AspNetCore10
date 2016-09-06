@@ -1,8 +1,5 @@
-using System;
-using System.Collections.ObjectModel;
 using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
@@ -12,28 +9,22 @@ namespace SwashbuckleExample.MiddleWare
     /// Sets the HTTPContext.User to the WindowsIdentity
     /// </summary>    
     /// <returns></returns>
-    public class HttpContextWindowsIdentityMiddleWare
+    public class NonIisWindowsIdentityMiddleWare
     {
         private readonly RequestDelegate _next;
 
-        public HttpContextWindowsIdentityMiddleWare(RequestDelegate next)
+        public NonIisWindowsIdentityMiddleWare(RequestDelegate next)
         {
             _next = next;
         }
 
-
         public async Task Invoke(HttpContext context)
         {
-            var wi = WindowsIdentity.GetCurrent();
-            wi.AddClaim(new Claim(@"http://schemas.microsoft.com/ws/2008/06/identity/claims/role", "IOAdmin"));
-            
+            var wi = WindowsIdentity.GetCurrent();     
             var cp = new ClaimsPrincipal(wi);
-
-            context.User = cp;
-            
+            context.User = cp;            
             await _next.Invoke(context);
 
         }
-
     }
 }

@@ -9,20 +9,13 @@ namespace SwashbuckleExample.AuthorizationRequirements
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, RoleRequirement requirement)
         {
-            if (!context.User.HasClaim(c => c.Type == ClaimTypes.Name))
+            if(context.User != null)
             {
-                return Task.FromResult(0);
-            }
-
-            if (context.User.HasClaim(c => c.Type == ClaimTypes.Role))
-            {
-                if (string.Compare(requirement.Role, 0,context.User.FindFirst(ClaimTypes.Role).Value, 0, requirement.Role.Length, false) == 0)
+                if (context.User.IsInRole(requirement.Role))
                 {
                     context.Succeed(requirement);
                 }
             }
-            
-
 
             return Task.FromResult(0);
         }

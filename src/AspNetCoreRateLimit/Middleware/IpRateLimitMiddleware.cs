@@ -27,7 +27,7 @@ namespace AspNetCoreRateLimit
             _next = next;
             _options = options.Value;
             _logger = logger;
-            _ipParser = ipParser != null ? ipParser : new ReversProxyIpParser(_options.RealIpHeader);
+            _ipParser = ipParser ?? new ReversProxyIpParser(_options.RealIpHeader);
 
             _processor = new IpRateLimitProcessor(_options, counterStore, policyStore, _ipParser);
         }

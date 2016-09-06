@@ -99,7 +99,9 @@ namespace SwashbuckleExample
             loggerFactory.AddDebug();
 
             if (env.EnvironmentName == "TestServer" || env.EnvironmentName == "DevelopmentProject")
-                app.UseHttpContextWindowsIdentityMiddleWare();
+                app.UseNonIisWindowsIdentityMiddleWare();
+
+            app.UseRoleMiddleWare();
 
             app.UseIpRateLimiting();
             app.UseUserRateimiterMiddleWare();
