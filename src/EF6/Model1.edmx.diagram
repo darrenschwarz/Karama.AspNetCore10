@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ced084f382604af2a3b7d725eeb902c3" Name="Diagram1">
+        <EntityTypeShape EntityType="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel.Car" Width="1.5" PointX="0.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel.Person" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel.PersonCar" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel.FK_dbo_PersonCars_dbo_Cars_Car1_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel.FK_dbo_PersonCars_dbo_People_Person1_Id" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

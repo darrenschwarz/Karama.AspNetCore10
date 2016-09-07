@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.IO;
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -7,8 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.Swagger.Model;
 using SwashbuckleExample.AuthorizationRequirements;
+using SwashbuckleExample.db;
 using SwashbuckleExample.MiddleWare;
 
 namespace SwashbuckleExample
@@ -24,6 +29,10 @@ namespace SwashbuckleExample
                 .AddEnvironmentVariables();
             
             Configuration = builder.Build();
+
+            // Set up data directory
+            string appRoot = PlatformServices.Default.Application.ApplicationBasePath;
+            AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(appRoot, "App_Data"));
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -57,10 +66,21 @@ namespace SwashbuckleExample
             var optUser = new UserRateLimitOptions();
             ConfigurationBinder.Bind(Configuration.GetSection("UserRateLimiting"), optUser);
 
+            // Add DbContext
+            //services.AddScoped(provider =>
+            //{
+            //    var connectionString = Configuration["Data:ApplicationDb:ConnectionString"];
+            //    return new ApplicationDbContext(connectionString);
+            //});
+            services.AddScoped((_) => new ApplicationDbContext(Configuration["Data:ApplicationDb:ConnectionString"]));
 
             // Add framework services.
-            services.AddMvc();
-
+            //services.AddMvc();
+            services.AddMvc().AddJsonOptions(options => {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+            
             services.AddSwaggerGen();
 
             services.ConfigureSwaggerGen(options =>

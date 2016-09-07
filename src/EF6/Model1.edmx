@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cars">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Make" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="People">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Age" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PersonCars">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Car1_Id" Type="int" />
+          <Property Name="Person1_Id" Type="int" />
+        </EntityType>
+        <Association Name="FK_dbo_PersonCars_dbo_Cars_Car1_Id">
+          <End Role="Cars" Type="Self.Cars" Multiplicity="0..1" />
+          <End Role="PersonCars" Type="Self.PersonCars" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cars">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonCars">
+              <PropertyRef Name="Car1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_PersonCars_dbo_People_Person1_Id">
+          <End Role="People" Type="Self.People" Multiplicity="0..1" />
+          <End Role="PersonCars" Type="Self.PersonCars" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="People">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PersonCars">
+              <PropertyRef Name="Person1_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModelStoreContainer">
+          <EntitySet Name="Cars" EntityType="Self.Cars" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="People" EntityType="Self.People" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonCars" EntityType="Self.PersonCars" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_PersonCars_dbo_Cars_Car1_Id" Association="Self.FK_dbo_PersonCars_dbo_Cars_Car1_Id">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="PersonCars" EntitySet="PersonCars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PersonCars_dbo_People_Person1_Id" Association="Self.FK_dbo_PersonCars_dbo_People_Person1_Id">
+            <End Role="People" EntitySet="People" />
+            <End Role="PersonCars" EntitySet="PersonCars" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Car">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Make" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PersonCars" Relationship="Self.FK_dbo_PersonCars_dbo_Cars_Car1_Id" FromRole="Cars" ToRole="PersonCars" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Age" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PersonCars" Relationship="Self.FK_dbo_PersonCars_dbo_People_Person1_Id" FromRole="People" ToRole="PersonCars" />
+        </EntityType>
+        <EntityType Name="PersonCar">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_dbo_PersonCars_dbo_Cars_Car1_Id" FromRole="PersonCars" ToRole="Cars" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_dbo_PersonCars_dbo_People_Person1_Id" FromRole="PersonCars" ToRole="People" />
+        </EntityType>
+        <Association Name="FK_dbo_PersonCars_dbo_Cars_Car1_Id">
+          <End Role="Cars" Type="Self.Car" Multiplicity="0..1" />
+          <End Role="PersonCars" Type="Self.PersonCar" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_dbo_PersonCars_dbo_People_Person1_Id">
+          <End Role="People" Type="Self.Person" Multiplicity="0..1" />
+          <End Role="PersonCars" Type="Self.PersonCar" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cars" EntityType="Self.Car" />
+          <EntitySet Name="People" EntityType="Self.Person" />
+          <EntitySet Name="PersonCars" EntityType="Self.PersonCar" />
+          <AssociationSet Name="FK_dbo_PersonCars_dbo_Cars_Car1_Id" Association="Self.FK_dbo_PersonCars_dbo_Cars_Car1_Id">
+            <End Role="Cars" EntitySet="Cars" />
+            <End Role="PersonCars" EntitySet="PersonCars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_PersonCars_dbo_People_Person1_Id" Association="Self.FK_dbo_PersonCars_dbo_People_Person1_Id">
+            <End Role="People" EntitySet="People" />
+            <End Role="PersonCars" EntitySet="PersonCars" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModelStoreContainer" CdmEntityContainer="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fEntities3">
+          <EntitySetMapping Name="Cars">
+            <EntityTypeMapping TypeName="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel.Car">
+              <MappingFragment StoreEntitySet="Cars">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Make" ColumnName="Make" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="People">
+            <EntityTypeMapping TypeName="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel.Person">
+              <MappingFragment StoreEntitySet="People">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonCars">
+            <EntityTypeMapping TypeName="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel.PersonCar">
+              <MappingFragment StoreEntitySet="PersonCars">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_dbo_PersonCars_dbo_Cars_Car1_Id" TypeName="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel.FK_dbo_PersonCars_dbo_Cars_Car1_Id" StoreEntitySet="PersonCars">
+            <EndProperty Name="Cars">
+              <ScalarProperty Name="Id" ColumnName="Car1_Id" />
+            </EndProperty>
+            <EndProperty Name="PersonCars">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="Car1_Id" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_dbo_PersonCars_dbo_People_Person1_Id" TypeName="APPLICATIONDB_fa3bfcf9d998484faa5d969985e5086fModel.FK_dbo_PersonCars_dbo_People_Person1_Id" StoreEntitySet="PersonCars">
+            <EndProperty Name="People">
+              <ScalarProperty Name="Id" ColumnName="Person1_Id" />
+            </EndProperty>
+            <EndProperty Name="PersonCars">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="Person1_Id" />
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

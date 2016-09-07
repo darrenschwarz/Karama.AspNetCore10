@@ -1,6 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SwashbuckleExample.core.Model;
+using SwashbuckleExample.db;
 
 namespace SwashbuckleExample.Controllers
 {
@@ -10,14 +15,27 @@ namespace SwashbuckleExample.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly ApplicationDbContext _dbContext;
+
+        public ValuesController(ApplicationDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         /// <summary>
         /// Gets Values
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<string> Get()
+        //public IEnumerable<string> Get()
+        public List<Person> Get()
         {
-            return new string[] { "value1", "value2" };
+            //_dbContext.AModels.Add(new AModel() {Name = "Bob"});
+            //await _dbContext.SaveChangesAsync();
+            var people =  _dbContext.People
+                .ToList();
+            return people;//Ok(new OkObjectResult(people));
+            //return new string[] { "value1", "value2" };
         }
 
         /// <summary>
