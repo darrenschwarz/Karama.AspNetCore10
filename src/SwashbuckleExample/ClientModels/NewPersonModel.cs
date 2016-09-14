@@ -10,12 +10,12 @@ namespace SwashbuckleExample.ClientModels
     public class NewPersonModel
     {
         [Required]
-        [Range(2, 10)]
+        [Range(1, 101)]
         public int Age { get; set; }
 
         [Required]     
         [MinLength(3)] 
-        [MaxLength(10)]  
+        [MaxLength(20)]  
         public string Name { get; set; }
     }
 }

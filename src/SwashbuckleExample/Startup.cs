@@ -124,7 +124,6 @@ namespace SwashbuckleExample
                 app.UseNonIisWindowsIdentityMiddleWare();
 
             app.UseRoleMiddleWare();
-
             app.UseIpRateLimiting();
             app.UseUserRateimiterMiddleWare();
             
