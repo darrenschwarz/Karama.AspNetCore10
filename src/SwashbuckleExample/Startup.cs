@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.Swagger.Model;
 using SwashbuckleExample.AuthorizationRequirements;
+using SwashbuckleExample.core.interfaces;
 using SwashbuckleExample.db;
 using SwashbuckleExample.MiddleWare;
 
@@ -23,7 +24,7 @@ namespace SwashbuckleExample
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
+                .SetBasePath(env.ContentRootPath)                
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
@@ -32,6 +33,7 @@ namespace SwashbuckleExample
 
             // Set up data directory
             string appRoot = PlatformServices.Default.Application.ApplicationBasePath;
+
             AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(appRoot, "App_Data"));
         }
 
@@ -66,12 +68,11 @@ namespace SwashbuckleExample
             var optUser = new UserRateLimitOptions();
             ConfigurationBinder.Bind(Configuration.GetSection("UserRateLimiting"), optUser);
 
+            services.AddTransient<IPeopleRepository, PeopleRepository>();
+            services.AddTransient<IPersonCarRepository, PersonCarRepository>();
+            services.AddTransient<ICarRepository, CarRepository>();
+
             // Add DbContext
-            //services.AddScoped(provider =>
-            //{
-            //    var connectionString = Configuration["Data:ApplicationDb:ConnectionString"];
-            //    return new ApplicationDbContext(connectionString);
-            //});
             services.AddScoped((_) => new ApplicationDbContext(Configuration["Data:ApplicationDb:ConnectionString"]));
 
             // Add framework services.

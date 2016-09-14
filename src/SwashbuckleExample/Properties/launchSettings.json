@@ -11,7 +11,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/people",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "DevelopmentIISExpress"
       }
@@ -19,7 +19,7 @@
     "SwashbuckleExample": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5000/api/values",
+      "launchUrl": "http://localhost:5000/api/people",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "DevelopmentProject"
       }

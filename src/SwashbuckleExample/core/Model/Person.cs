@@ -16,5 +16,10 @@ namespace SwashbuckleExample.core.Model
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PersonCar> PersonCars { get; set; }
+
+        public void AddCar(PersonCar personCar)
+        {
+            PersonCars.Add(personCar);
+        }
     }
 }

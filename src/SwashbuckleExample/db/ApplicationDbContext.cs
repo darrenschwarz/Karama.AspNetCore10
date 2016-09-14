@@ -16,6 +16,7 @@ namespace SwashbuckleExample.db
         }
 
         public ApplicationDbContext(string nameOrConnectionString) : base(nameOrConnectionString)
+        //public ApplicationDbContext() : base("APPLICATIONDB_a1bdb69e32ac445ba4fa5a05a773ac8eEntities")
         {
         }
 

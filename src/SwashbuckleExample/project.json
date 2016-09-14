@@ -29,6 +29,9 @@
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true,
+    "copyToOutput": {
+      "include": [ "App_Data" ]
+    },   
     "xmlDoc": true
   },
 
