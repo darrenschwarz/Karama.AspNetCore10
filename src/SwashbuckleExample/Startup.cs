@@ -106,8 +106,8 @@ namespace SwashbuckleExample
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("IOAdmin",
-                    policy => policy.Requirements.Add(new RoleRequirement("IOAdmin")));
+                options.AddPolicy("IOAdmin", policy => policy.Requirements.Add(new RoleRequirement("IOAdmin")));
+                options.AddPolicy("SomeOther", policy => policy.Requirements.Add(new RoleRequirement("SomeOther")));
             });
 
             services.AddSingleton<IAuthorizationHandler, RoleHandler>();

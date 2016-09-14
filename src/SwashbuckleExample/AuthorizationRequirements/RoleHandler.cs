@@ -1,6 +1,7 @@
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 
 namespace SwashbuckleExample.AuthorizationRequirements
@@ -14,6 +15,10 @@ namespace SwashbuckleExample.AuthorizationRequirements
                 if (context.User.IsInRole(requirement.Role))
                 {
                     context.Succeed(requirement);
+                }
+                else
+                {
+                    context.Fail();
                 }
             }
 

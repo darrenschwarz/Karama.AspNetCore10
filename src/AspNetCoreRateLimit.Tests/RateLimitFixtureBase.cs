@@ -17,6 +17,7 @@ namespace AspNetCoreRateLimit.Tests
                 .UseStartup<TStartup>()
                 .UseEnvironment("TestServer");
 
+
             _server = new TestServer(builder);
 
             Client = _server.CreateClient();

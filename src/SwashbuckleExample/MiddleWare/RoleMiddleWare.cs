@@ -23,9 +23,11 @@ namespace SwashbuckleExample.MiddleWare
             //var wi = (WindowsIdentity)context.User.Identity;
             var wi = WindowsIdentity.GetCurrent();
             wi.AddClaim(new Claim(ClaimTypes.GroupSid, "IOAdmin"));//TODO: Retieve from AD/ADAM and place in cache with an expiry, wich can also be forcibly expired,
+            wi.AddClaim(new Claim(ClaimTypes.GroupSid, "SomeOther"));
             //var cp = new ClaimsPrincipal(context.User.Identity);          
             var cp = new ClaimsPrincipal(wi);
             context.User = cp;
+
             await _next.Invoke(context);
 
         }

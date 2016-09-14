@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -30,17 +31,26 @@ namespace SwashbuckleExample.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var peopleList = await _peopleRepository.GetAsync();
-
-            var result = peopleList.Select(person => new PersonDTO()
+            try
             {
-                Id = person.Id,
-                Age = person.Age,
-                Name = person.Name,
-                Cars = person.PersonCars.Select(car => new CarDTO() {Id = car.Id, Make = car.Car.Make}).ToList()
-            });
-           
-            return Ok(result);
+                var peopleList = await _peopleRepository.GetAsync();
+
+                var result = peopleList.Select(person => new PersonDTO()
+                {
+                    Id = person.Id,
+                    Age = person.Age,
+                    Name = person.Name,
+                    Cars = person.PersonCars.Select(car => new CarDTO() { Id = car.Id, Make = car.Car.Make }).ToList()
+                });
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                
+                throw;
+            }
+
         }
 
         /// <summary>
