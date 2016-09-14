@@ -7,8 +7,8 @@ namespace AspNetCoreRateLimit.Tests
 {
     public class UserRateLimitTests : IClassFixture<RateLimitFixture<SwashbuckleExample.Startup>>
     {
-        private const string apiValuesPath = "/api/values";
-        //private const string apiRateLimitPath = "/api/UserRateLimit";
+        private const string apiPeoplePath = "/api/people";
+
         private const string ip = "::1";
 
         public UserRateLimitTests(RateLimitFixture<SwashbuckleExample.Startup> fixture)
@@ -29,7 +29,7 @@ namespace AspNetCoreRateLimit.Tests
             // Act    
             for (int i = 0; i < 4; i++)
             {
-                var request = new HttpRequestMessage(new HttpMethod(verb), apiValuesPath);
+                var request = new HttpRequestMessage(new HttpMethod(verb), apiPeoplePath);
                 request.Headers.Add("X-Real-IP", ip);
                 request.Headers.Add("X-ClientId", clientId);                
 
@@ -53,7 +53,7 @@ namespace AspNetCoreRateLimit.Tests
             // Act    
             for (int i = 0; i < 2; i++)
             {
-                var request = new HttpRequestMessage(new HttpMethod(verb), apiValuesPath);
+                var request = new HttpRequestMessage(new HttpMethod(verb), apiPeoplePath);
                 request.Headers.Add("X-Real-IP", ip);
                 request.Headers.Add("X-ClientId", clientId);
 

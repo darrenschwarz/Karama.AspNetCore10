@@ -73,7 +73,8 @@ namespace SwashbuckleExample
             services.AddTransient<ICarRepository, CarRepository>();
 
             // Add DbContext
-            services.AddScoped((_) => new ApplicationDbContext(Configuration["Data:ApplicationDb:ConnectionString"]));
+            var conStr = Configuration["Data:ApplicationDb:ConnectionString"];
+            services.AddScoped((_) => new ApplicationDbContext(conStr));
 
             // Add framework services.
             //services.AddMvc();

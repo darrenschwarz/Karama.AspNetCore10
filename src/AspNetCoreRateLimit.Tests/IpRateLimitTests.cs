@@ -9,7 +9,7 @@ namespace AspNetCoreRateLimit.Tests
 {
     public class IpRateLimitTests : IClassFixture<RateLimitFixture<SwashbuckleExample.Startup>>
     {
-        private const string apiValuesPath = "/api/values";
+        private const string apiValuesPath = "/api/people";
         private const string apiRateLimitPath = "/api/ipratelimit";
 
         public IpRateLimitTests(RateLimitFixture<SwashbuckleExample.Startup> fixture)

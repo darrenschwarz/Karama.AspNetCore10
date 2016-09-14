@@ -17,7 +17,7 @@
   },
   "buildOptions": {
     "copyToOutput": {
-      "include": [ "appsettings.json" ]
+      "include": [ "appsettings.json", "App_Data" ]
     }
   },
   "testRunner": "xunit",
