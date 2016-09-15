@@ -94,7 +94,7 @@ namespace SwashbuckleExample.Controllers
 
             if (person != null)
             {
-                return BadRequest($"{personModel.Name} already exists.");
+                return StatusCode(409, $"{personModel.Name} already exists."); //BadRequest($"{personModel.Name} already exists.");
             }
 
             await _peopleRepository.AddAsync(new Person()
