@@ -56,16 +56,16 @@ namespace SwashbuckleExample.Controllers
         /// <summary>
         /// Gets a value
         /// </summary>
-        /// <param name="personId"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("{personId}")]
-        public async Task<IActionResult> Get(int personId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            var person = await _peopleRepository.GetAsync(personId);
+            var person = await _peopleRepository.GetAsync(id);
 
             if (person == null)
             {
-                return NotFound(personId);
+                return NotFound(id);
             }
 
             var result = new PersonDTO()
@@ -83,6 +83,7 @@ namespace SwashbuckleExample.Controllers
         /// </summary>
         /// <param name="personModel"></param>
         [HttpPost]
+        [Produces(typeof(Person))]
         public async Task<IActionResult> Post([FromBody]NewPersonModel personModel)
         {
             if (!ModelState.IsValid)
@@ -97,13 +98,13 @@ namespace SwashbuckleExample.Controllers
                 return StatusCode(409, $"{personModel.Name} already exists."); //BadRequest($"{personModel.Name} already exists.");
             }
 
-            await _peopleRepository.AddAsync(new Person()
+           var personResult =  await _peopleRepository.AddAsync(new Person()
             {
                 Age = personModel.Age,
                 Name = personModel.Name
             });
 
-            return Ok();
+            return CreatedAtAction("Get", new {id = personResult.Id}, personResult);
             // For more information on protecting this API from Cross Site Request Forgery (CSRF) attacks, see http://go.microsoft.com/fwlink/?LinkID=717803
         }
 

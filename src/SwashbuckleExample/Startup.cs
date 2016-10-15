@@ -138,6 +138,7 @@ namespace SwashbuckleExample
 
             // Enable middleware to serve swagger-ui assets (HTML, JS, CSS etc.)
             app.UseSwaggerUi();
+            
         }
     }
 }

@@ -34,10 +34,11 @@ namespace SwashbuckleExample.db
                 .FirstOrDefaultAsync(p => p.Name == name);
         }
 
-        public Task AddAsync(Person person)
+        public async Task<Person> AddAsync(Person person)
         {
             _dbContext.People.Add(person);
-            return _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
+            return person;
         }
 
         public Task UpdateAsync(Person person)

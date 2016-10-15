@@ -18,7 +18,7 @@ namespace SwashbuckleExample.core.interfaces
 
         Task<Person> GetByNameAsync(string name);
 
-        Task AddAsync(Person person);
+        Task<Person> AddAsync(Person person);
 
         Task UpdateAsync(Person person);
     }
