@@ -9,6 +9,6 @@ namespace SoftwareApplication.EfCore.Api.Models
         public int PackageId { get; set; }
         public string LicenceType { get; set; }
 
-        public virtual Packages Package { get; set; }
+        public Packages Package { get; set; }
     }
 }

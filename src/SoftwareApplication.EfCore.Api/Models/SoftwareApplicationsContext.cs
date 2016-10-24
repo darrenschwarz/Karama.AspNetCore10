@@ -84,5 +84,6 @@ namespace SoftwareApplication.EfCore.Api.Models
         public virtual DbSet<PackageDetails> PackageDetails { get; set; }
         public virtual DbSet<Packages> Packages { get; set; }
         public virtual DbSet<SoftwareAutomation> SoftwareAutomation { get; set; }
+        public virtual DbSet<BroadSearch> BroadSearch { get; set; }
     }
 }
