@@ -3,16 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SoftwareApplication.EfCore.Api.Models;
 
 namespace SoftwareApplication.EfCore.Api.Controllers
 {
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        private readonly SoftwareApplicationsContext _softwareApplicationsContext;
+
+        public ValuesController(SoftwareApplicationsContext softwareApplicationsContext)
+        {
+            _softwareApplicationsContext = softwareApplicationsContext;
+        }
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            var p = _softwareApplicationsContext.Packages.ToList();
             return new string[] { "value1", "value2" };
         }
 

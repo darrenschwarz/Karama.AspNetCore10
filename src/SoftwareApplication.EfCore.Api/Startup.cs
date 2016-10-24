@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SoftwareApplication.EfCore.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SoftwareApplication.EfCore.Api
 {
@@ -29,8 +31,10 @@ namespace SoftwareApplication.EfCore.Api
         {
             services.AddOptions();
             // Add DbContext
-            var conStr = Configuration["Data:SoftwareApplications:ConnectionString"];
-            //services.AddScoped((_) => new ApplicationDbContext(conStr));
+            
+            services.AddDbContext<SoftwareApplicationsContext>(options =>
+            options.UseSqlServer(Configuration["Data:SoftwareApplications:ConnectionString"]));
+
             // Add framework services.
             services.AddMvc();
         }
