@@ -20,9 +20,9 @@ namespace SwashbuckleExample.MiddleWare
 
         public async Task Invoke(HttpContext context)
         {
-            var wi = WindowsIdentity.GetCurrent();     
+            var wi = WindowsIdentity.GetCurrent();
             var cp = new ClaimsPrincipal(wi);
-            context.User = cp;            
+            context.User = cp;
             await _next.Invoke(context);
 
         }

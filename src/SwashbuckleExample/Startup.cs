@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using AspNetCoreRateLimit;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -104,6 +109,11 @@ namespace SwashbuckleExample
                 options.IncludeXmlComments(basePath + "\\SwashbuckleExample.xml");
             });
 
+            services.AddAuthentication(options => new IISOptions()
+            {
+                ForwardWindowsAuthentication = true
+            });
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("IOAdmin", policy => policy.Requirements.Add(new RoleRequirement("IOAdmin")));
@@ -111,7 +121,6 @@ namespace SwashbuckleExample
             });
 
             services.AddSingleton<IAuthorizationHandler, RoleHandler>();
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -120,8 +129,57 @@ namespace SwashbuckleExample
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            if (env.EnvironmentName == "TestServer" || env.EnvironmentName == "DevelopmentProject")
+            if (env.EnvironmentName == "TestServer" || env.EnvironmentName == "DevelopmentProject")//TODO:Add Enironments for each Role Type 
+            {
                 app.UseNonIisWindowsIdentityMiddleWare();
+            }
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseCookieAuthentication(
+
+                   new CookieAuthenticationOptions()
+                   {
+                       AuthenticationScheme = typeof(CookieOptions).Namespace + ".Application",
+                       AutomaticAuthenticate = true,
+                       AutomaticChallenge = true,
+                       ReturnUrlParameter = "ReturnUrl",
+                       // LoginPath = new PathString("/windowsauthentication/ntlm"),
+                       //AccessDeniedPath = new PathString("/windowsauthentication/ntlm"),
+                       Events = new CookieAuthenticationEvents //This handles authroisation failures in the absence of using IIsIntegration
+                       {
+                           OnRedirectToLogin = ctx =>
+                           {
+                               if (ctx.Request.Path.StartsWithSegments("/api") &&
+                                   ctx.Response.StatusCode == (int)HttpStatusCode.OK)
+                               {
+                                   ctx.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                               }
+                               else
+                               {
+                                   ctx.Response.Redirect(ctx.RedirectUri);
+                               }
+                               return Task.FromResult(0);
+                           },
+                           OnRedirectToAccessDenied = ctx1 =>
+                           {
+                               if (ctx1.Request.Path.StartsWithSegments("/api") &&
+                                   ctx1.Response.StatusCode == (int)HttpStatusCode.OK)
+                               {
+                                   ctx1.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                               }
+                               else
+                               {
+                                   ctx1.Response.Redirect(ctx1.RedirectUri);
+                               }
+                               return Task.FromResult(0);
+                           }
+                       }
+                   });
+
 
             app.UseRoleMiddleWare();
             app.UseIpRateLimiting();

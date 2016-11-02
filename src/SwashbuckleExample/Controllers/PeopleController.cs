@@ -13,7 +13,9 @@ using SwashbuckleExample.db;
 
 namespace SwashbuckleExample.Controllers
 {
+   // [Authorize]
     [Authorize(Policy = "IOAdmin")]
+    //[Authorize(Roles = "IOAdmin")]
     [Route("api/[controller]")]
     public class PeopleController : Controller
     {

@@ -32,7 +32,7 @@ namespace AspNetCoreRateLimit.Tests
                 var request = new HttpRequestMessage(new HttpMethod(verb), apiPeoplePath);
                 request.Headers.Add("X-Real-IP", ip);
                 request.Headers.Add("X-ClientId", clientId);                
-
+                
                 var response = await Client.SendAsync(request);
                 responseStatusCode = (int)response.StatusCode;
             }

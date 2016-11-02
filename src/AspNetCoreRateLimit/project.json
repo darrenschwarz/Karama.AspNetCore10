@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.0",
   "description": "ASP.NET Core rate limiting middle-ware",
   "authors": [ "Stefan Prodan" ],
@@ -14,7 +14,7 @@
     }
   },
   "dependencies": {
-    "Microsoft.AspNetCore.Mvc": "1.0.0",
+    "Microsoft.AspNetCore.Mvc": "1.0.1",
     "NETStandard.Library": "1.6.0"
   },
 

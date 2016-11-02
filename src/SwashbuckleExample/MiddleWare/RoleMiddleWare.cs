@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -19,13 +20,23 @@ namespace SwashbuckleExample.MiddleWare
         }
 
         public async Task Invoke(HttpContext context)
-        {            
-            //var wi = (WindowsIdentity)context.User.Identity;
-            var wi = WindowsIdentity.GetCurrent();
-            wi.AddClaim(new Claim(ClaimTypes.GroupSid, "IOAdmin"));//TODO: Retieve from AD/ADAM and place in cache with an expiry, wich can also be forcibly expired,
-            wi.AddClaim(new Claim(ClaimTypes.GroupSid, "SomeOther"));
-            //var cp = new ClaimsPrincipal(context.User.Identity);          
-            var cp = new ClaimsPrincipal(wi);
+        {
+            const string Issuer = "http://air.co.com";
+
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, context.User.Identity.Name, ClaimValueTypes.String, Issuer),
+                new Claim(ClaimTypes.Role, "IOAdmins", ClaimValueTypes.String, Issuer)
+            };
+
+            var userIdentity = new ClaimsIdentity(claims, "Windows");
+
+            //var userIdentity = WindowsIdentity.GetCurrent();
+            //userIdentity.AddClaim(new Claim(ClaimTypes.GroupSid, "IOAdmin"));//TODO: Retieve from AD/ADAM and place in cache with an expiry, wich can also be forcibly expired,
+            //userIdentity.AddClaim(new Claim(ClaimTypes.GroupSid, "SomeOther"));      
+            //var cp = new ClaimsPrincipal(userIdentity);
+            var cp = new ClaimsPrincipal(userIdentity);
+
             context.User = cp;
 
             await _next.Invoke(context);
