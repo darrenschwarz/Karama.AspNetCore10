@@ -11,9 +11,14 @@ namespace SwashbuckleExample.MiddleWare
             return builder.UseMiddleware<NonIisWindowsIdentityMiddleWare>();
         }
 
-        public static IApplicationBuilder UseRoleMiddleWare(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseRoleMiddleWare(this IApplicationBuilder builder)//TODO: Implement Generic UseRoleMiddleWare
         {
              return builder.UseMiddleware<RoleMiddleWare>();
+        }
+
+        public static IApplicationBuilder UseRoleMiddleWare<T>(this IApplicationBuilder builder)//TODO: Implement Generic UseRoleMiddleWare
+        {
+            return builder.UseMiddleware<T>();
         }
     }
 }

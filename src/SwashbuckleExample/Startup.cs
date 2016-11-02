@@ -121,15 +121,20 @@ namespace SwashbuckleExample
             });
 
             services.AddSingleton<IAuthorizationHandler, RoleHandler>();
+
+            var r = Configuration.GetSection("Role");
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            if (env.EnvironmentName == "TestServer" || env.EnvironmentName == "DevelopmentProject")//TODO:Add Enironments for each Role Type 
+           
+            if (env.EnvironmentName == "TestServerAdmin" || env.EnvironmentName == "DevelopmentProject")//TODO:Add Enironments for each Role Type 
             {
                 app.UseNonIisWindowsIdentityMiddleWare();
             }
@@ -181,7 +186,8 @@ namespace SwashbuckleExample
                    });
 
 
-            app.UseRoleMiddleWare();
+            //app.UseRoleMiddleWare();
+            app.UseRoleMiddleWare<RoleMiddleWare>();
             app.UseIpRateLimiting();
             app.UseUserRateimiterMiddleWare();
             
